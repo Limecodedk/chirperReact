@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.chripForm {
+  border: 1px solid #e9e0e0;
+  padding: 11px;
+  border-radius: 8px;
+  background-color: rgb(245, 245, 245);
+}
+
+.round-small {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+.col-1 {
+  width: 40%;
+}
+
+.col-2 {
+  width: 100%;
+}
