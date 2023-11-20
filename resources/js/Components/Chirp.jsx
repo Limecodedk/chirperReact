@@ -10,12 +10,14 @@ import { AiFillHeart, AiOutlineLike } from 'react-icons/ai'
 
 dayjs.extend(relativeTime);
 
-export default function Chirp({ chirp }) {
+export default function Chirp({ chirp, authUser, user }) {
   const [editing, setEditing] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState(chirp.likes_count);
+
+  console.log(user)
 
   const { auth } = usePage().props;
   const userId = auth.user.id;
@@ -27,13 +29,11 @@ export default function Chirp({ chirp }) {
     user_id: userId,
     chirp_id: chirp.id,
     content: newComment,
-
   });
 
   const chirpId = data.chirp_id;
   const imagePath = chirp.image;
   const imageUrl = '/storage/' + imagePath;
-
 
 
   //Update chirps
@@ -65,7 +65,6 @@ export default function Chirp({ chirp }) {
 
   //Create chirp comment
   const handleNewCommentSubmit = async (e) => {
-    e.preventDefault();
     const formData = new FormData();
     data.user_id = userId;
     data.chirp_id = chirp.id;
@@ -74,6 +73,7 @@ export default function Chirp({ chirp }) {
     });
     e.target.reset()
   };
+
 
   //Show chirp comments
   const toggleComments = () => {
@@ -88,13 +88,14 @@ export default function Chirp({ chirp }) {
     setLikes(likes + 1);
   };
 
+
   return (
-    <div className="p-6  flex space-x-2">
+    <div className="p-6 flex space-x-2">
       <img src={ProfilImageUrl} alt="" className='round-small' />
       <div className="flex-1">
         <div className="flex justify-between items-center">
           <div>
-            <Link href={`/profile/${chirp.user_id}/`}>
+            <Link href={`/profile/${chirp.user.slug}/`}>
               <span className="text-gray-800">{chirp.user.name}</span>
             </Link>
             <small className="ml-2 text-sm text-gray-600">{dayjs(chirp.created_at).fromNow()}</small>

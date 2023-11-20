@@ -24,3 +24,9 @@
 .col-2 {
   width: 100%;
 }
+
+
+.messagesCard:hover {
+  box-shadow: 1px 1px 4px #999999;
+  border-radius: 15px;
+}

@@ -9,10 +9,8 @@ use App\Models\User;
 
 class UserProfilePageController extends Controller
 {
-  public function view(Request $request, $userid): \Inertia\Response
+  public function view(Request $request, User $user): \Inertia\Response
   {
-    $user = User::find($userid);
-
 
     if (!$user) {
       return Redirect::to('/');

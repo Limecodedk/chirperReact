@@ -22,9 +22,21 @@ class FriendsController extends Controller
     ]);
   }
 
-  public function getUserFriends($userId)
+  //Show friends
+  public function showmyfriends()
   {
-    $user = User::find($userId);
+    $user = auth()->user();
+    $friendRequests = $user->friendRequests;
+
+    return Inertia::render('Profile/Friends/AllFriends', [
+      'user' => $user,
+      'friend_requests' => $friendRequests,
+    ]);
+  }
+
+  //Show Users friends
+  public function getUserFriends(User $user)
+  {
     $friends = $user->friends;
     $friendRequests = $user->friendRequests;
 
@@ -34,9 +46,9 @@ class FriendsController extends Controller
     ]);
   }
 
+  //Friends
   public function store(Request $request)
   {
-    /*     dd($request->all()); */
     // gem nyt venskab
     $user1 = auth()->user();
     $user2 = User::find($request->input('friendsId'));
@@ -51,13 +63,22 @@ class FriendsController extends Controller
     }
   }
 
-  public function update()
+  // accepter venskab / update pivot
+  public function update(User $user)
   {
-    // accepter venskab / update pivot
+    $user = auth()->user();
+
+    $user->friends()->updateExistingPivot($user->id, ['accepted_at' => now()]);
+
+    return response()->json([
+      'message' => 'Friend request accepted successfully',
+    ]);
   }
 
-  public function destroy()
+  public function delete(User $user)
   {
-    // slet venskab / detach
+    $authUser = auth()->user();
+    $authUser->friends()->detach($user->id);
+    $user->friends()->detach($authUser->id);
   }
 }

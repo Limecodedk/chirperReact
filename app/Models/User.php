@@ -28,6 +28,7 @@ class User extends Authenticatable
     'gender',
     'profile_cover_image',
     'profile_text',
+    'slug'
   ];
 
   /**

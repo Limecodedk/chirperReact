@@ -40,13 +40,13 @@ Route::middleware('auth')->group(function () {
   Route::patch('/profile/settings', [ProfileController::class, 'update'])->name('profile.update');
   Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
   Route::get('/profile/inbox', [InboxController::class, 'index'])->name('profile.inbox');
-  Route::post('/profile/settings/image', [ProfileController::class, 'profileImage'])->name('profile.profileimage');
-  Route::post('/profile/settings', [ProfileController::class, 'profilecoverimage'])->name('profile.profilecoverimage');
+  Route::post('/profile/settings/imageprofile', [ProfileController::class, 'profileImage'])->name('profile.profileimage');
+  Route::post('/profile/settings/imagecover', [ProfileController::class, 'profilecoverimage'])->name('profile.profilecoverimage');
 });
 
 //User Profile Page
 Route::middleware('auth')->group(function () {
-  Route::get('/profile/{userid}/', [UserProfilePageController::class, 'view'])->name('Profile.UserProfile');
+  Route::get('/profile/{user:slug}/', [UserProfilePageController::class, 'view'])->name('Profile.UserProfile');
 });
 
 //Chirps
@@ -77,11 +77,12 @@ Route::middleware('auth')->group(function () {
 //Friends
 Route::middleware('auth')->group(function () {
   Route::get('/friends', [FriendsController::class, 'index'])->name('friends.index');
-  Route::get('/user/{userId}/friends', [FriendsController::class, 'getUserFriends']);
+  Route::get('/{user:slug}/friends', [FriendsController::class, 'showmyfriends'])->name('showfriends');
+  Route::get('/user/{user:slug}/friends', [FriendsController::class, 'getUserFriends']);
   Route::post('/friends/add/', [FriendsController::class, 'store'])->name('friends.add');
+  Route::post('/{user:slug}/friends/request', [FriendsController::class, 'update'])->name('friendsrequest');
+  Route::delete('/{user:slug}/friend/remove', [FriendsController::class, 'delete'])->name('deletefriend');
 });
 
-
-
-
 require __DIR__ . '/auth.php';
+include __DIR__ . '/messages.php';

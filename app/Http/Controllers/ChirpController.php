@@ -2,23 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Like;
+use App\Models\User;
 use Inertia\Inertia;
+use App\Models\Chirp;
 use Inertia\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreChirpRequest;
-use App\Models\Chirp;
-use App\Models\Like;
+
 
 class ChirpController extends Controller
 {
   /**
    * Display a listing of the resource.
    */
+
   public function index(): Response
   {
+    $user = auth()->user();
+    $chirps = Chirp::with(['user:id,name,profile_Image_Url,slug'])->latest()->get();
+
     return Inertia::render('Chirps/Index', [
-      'chirps' => Chirp::with(['user:id,name,profile_Image_Url'])->latest()->get(),
+      'chirps' => $chirps,
+      'authUser' => $user,
     ]);
   }
 
@@ -59,6 +67,10 @@ class ChirpController extends Controller
 
     $user = $request->user();
     $data = $request->validated();
+
+    if ($user->chirp_image) {
+      Storage::disk('public')->delete($user->chirp_image);
+    }
 
     if ($request->hasFile('image')) {
       $imagePath = $request->file('image')->store('chirp_images', 'public');

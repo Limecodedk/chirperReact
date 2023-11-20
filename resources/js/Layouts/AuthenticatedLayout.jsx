@@ -4,15 +4,17 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
+import { FaRegMessage } from "react-icons/fa6";
+import { IoIosNotificationsOutline } from "react-icons/io";
 
 
 export default function Authenticated({ user, header, children }) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
   const UserId = user.id;
+  const UserSlug = user.slug;
   const ProfilImage = user.profile_Image_Url;
   const ProfilImageUrl = '/storage/' + ProfilImage;
-
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -37,7 +39,26 @@ export default function Authenticated({ user, header, children }) {
             </div>
 
             <div className="hidden sm:flex sm:items-center sm:ml-6">
-              <div className="ml-3 relative">
+              <div className="ml-3 relative flex flex-row">
+                <span className="inline-flex rounded-md">
+                  <button
+                    type="button"
+                    className="inline-flex items-center px-1 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                  >
+                    <Link href='/messages'>
+                      <FaRegMessage />
+                    </Link>
+                    <span className='mx-1'>
+                      2
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-flex items-center py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                  >
+                    <IoIosNotificationsOutline style={{ fontSize: '20px' }} />
+                  </button>
+                </span>
                 <Dropdown>
                   <Dropdown.Trigger>
                     <span className="inline-flex rounded-md">
@@ -45,7 +66,7 @@ export default function Authenticated({ user, header, children }) {
                         type="button"
                         className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                       >
-                        <Link href={`/profile/${UserId}`}>
+                        <Link href={`/profile/${UserSlug}`}>
                           <img src={ProfilImageUrl} alt="" className='round-small mx-3' />
                         </Link>
                         {user.name}
@@ -66,13 +87,14 @@ export default function Authenticated({ user, header, children }) {
                     </span>
                   </Dropdown.Trigger>
                   <Dropdown.Content>
-                    <Dropdown.Link href={`/profile/${UserId}`}>Profile</Dropdown.Link>
+                    <Dropdown.Link href={`/profile/${UserSlug}`}>Profile</Dropdown.Link>
                     <Dropdown.Link href={route('profile.edit')}>Profile settings</Dropdown.Link>
                     <Dropdown.Link href={route('logout')} method="post" as="button">
                       Log Out
                     </Dropdown.Link>
                   </Dropdown.Content>
                 </Dropdown>
+
               </div>
             </div>
 

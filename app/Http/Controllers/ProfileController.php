@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class ProfileController extends Controller
 {
@@ -44,29 +46,41 @@ class ProfileController extends Controller
    */
   public function profileImage(Request $request): RedirectResponse
   {
-    /*  dd($request->all()); */
     if ($request->hasFile('profileImageUrl')) {
+      // Slet det eksisterende billede
+      if ($request->user()->profile_Image_Url) {
+        Storage::disk('public')->delete($request->user()->profile_Image_Url);
+      }
+
+      // Gem det nye billede
       $imagePath = $request->file('profileImageUrl')->store('profileImageUrl', 'public');
       $request->user()->profile_Image_Url = $imagePath;
       $request->user()->save();
     }
 
-    return Redirect::route('profile.edit');
+    return redirect()->route('profile.edit');
   }
 
   /**
    * Upload profile cover image
    */
-  public function profilecoverimage(Request $request): RedirectResponse
+  public function profileCoverImage(Request $request): RedirectResponse
   {
     if ($request->hasFile('profilecoverimage')) {
+      // Slet det eksisterende cover-billede
+      if ($request->user()->profile_cover_image) {
+        Storage::disk('public')->delete($request->user()->profile_cover_image);
+      }
+
+      // Gem det nye cover-billede
       $imagePath = $request->file('profilecoverimage')->store('profilecoverimage', 'public');
       $request->user()->profile_cover_image = $imagePath;
       $request->user()->save();
     }
 
-    return Redirect::route('profile.profilecoverimage');
+    return redirect()->route('profile.edit');
   }
+
 
 
   /**
@@ -77,6 +91,14 @@ class ProfileController extends Controller
     $request->validate([
       'password' => ['required', 'current_password'],
     ]);
+
+    if ($request->user()->profile_Image_Url) {
+      Storage::disk('public')->delete($request->user()->profile_Image_Url);
+    }
+
+    if ($request->user()->profile_cover_image) {
+      Storage::disk('public')->delete($request->user()->profile_cover_image);
+    }
 
     $user = $request->user();
 

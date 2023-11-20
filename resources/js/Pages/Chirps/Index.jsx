@@ -5,13 +5,13 @@ import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { useForm, Head } from '@inertiajs/react';
 
-export default function Index({ auth, chirps }) {
+export default function Index({ auth, chirps, user }) {
   const { data, setData, post, processing, reset, errors } = useForm({
     message: '',
     image: ''
   });
-
   const [fileInputKey, setFileInputKey] = useState(0);
+
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -57,7 +57,7 @@ export default function Index({ auth, chirps }) {
         </form>
         <div className="mt-6 bg-white shadow-sm rounded-lg divide-y">
           {chirps.map(chirp =>
-            <Chirp key={chirp.id} chirp={chirp} />
+            <Chirp key={chirp.id} chirp={chirp} user={user} />
           )}
         </div>
       </div>
