@@ -38,7 +38,7 @@ const Messages = ({ user, receiver_id }) => {
   };
 
 
-  //Hent sendt beskeder
+  //Hent sendte beskeder
   const fetchSentMessagesData = async (receiverId) => {
     try {
       const response = await fetch(`/messages/${receiverId}/sent`, {
@@ -86,8 +86,6 @@ const Messages = ({ user, receiver_id }) => {
     return () => clearInterval(intervalId);
   }, [receiver_id]);
 
-
-
   // Send nye beskeder
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -115,9 +113,6 @@ const Messages = ({ user, receiver_id }) => {
       console.error('Fejl ved afsendelse af besked:', error);
     }
   };
-
-
-
 
   return (
     <div>

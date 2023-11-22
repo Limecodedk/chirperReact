@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { useForm, Head, Link } from '@inertiajs/react';
 import { FaInbox } from "react-icons/fa";
 import Messages from '@/Components/NewMessages';
-import { MdDelete } from "react-icons/md";
 
 
 const messagesInbox = ({ auth, user }) => {
@@ -55,11 +54,9 @@ const messagesInbox = ({ auth, user }) => {
         }
 
         const responseData = await response.json();
-
         // Opdater data med de hentede samtaler og opdater receiver_id baseret på beskederne
         setData(responseData);
 
-        // Opdater receiver_id baseret på logikken fra beskederne (eksempel)
         const newReceiverId = calculateReceiverId(responseData.messages);
 
         setReceiver_id(newReceiverId);
@@ -68,11 +65,6 @@ const messagesInbox = ({ auth, user }) => {
       console.error('Error fetching conversation:', error);
     }
   };
-
-  useEffect(() => {
-    const defaultType = '';
-    fetchConversations(defaultType);
-  }, [user.id]);
 
   // funktion til at beregne receiver_id baseret på beskederne
   const calculateReceiverId = (messages) => {
@@ -85,7 +77,6 @@ const messagesInbox = ({ auth, user }) => {
     fetchConversations(defaultType);
   }, [user.id]);
 
-  // messagesInbox.jsx
   const handleConversationClick = async (conversation) => {
     if (conversation && conversation.receiver_id) {
       setReceiver_id(conversation.receiver_id);
@@ -103,15 +94,12 @@ const messagesInbox = ({ auth, user }) => {
     return date.toLocaleDateString('da-DK', options);
   };
 
-
-
   return (
     <>
       <AuthenticatedLayout
         user={auth.user}
       >
         <Head title="Inbox" />
-
         <div className="py-12">
           <div className="max-w-7xl mx-auto sm:px-6 lg:px-8" >
             <div className="bg-white shadow-sm sm:rounded-lg">

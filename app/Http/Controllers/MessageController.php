@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
+
+  //Vis alle beskeder
   public function index(User $user)
   {
     // Logik til at hente og vise alle beskeder
@@ -24,7 +26,7 @@ class MessageController extends Controller
     ]);
   }
 
-
+  //Vis besked
   public function show(User $user, $type = 'inbox')
   {
     // Hent brugerens ID og navn
@@ -68,7 +70,7 @@ class MessageController extends Controller
   }
 
 
-
+  //Vis samtaler
   public function viewConversations()
   {
     try {
@@ -118,9 +120,7 @@ class MessageController extends Controller
   }
 
 
-
-
-
+  //Gem beskeder
   public function store(Request $request)
   {
     $request->validate([
@@ -137,7 +137,6 @@ class MessageController extends Controller
       'message' => 'Besked oprettet succesfuldt'
     ]);
   }
-
 
   public function update(Request $request, $id)
   {
