@@ -17,7 +17,6 @@ export default function Chirp({ chirp, authUser, user }) {
   const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState(chirp.likes_count);
 
-  console.log(user)
 
   const { auth } = usePage().props;
   const userId = auth.user.id;

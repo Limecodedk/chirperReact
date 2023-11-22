@@ -22,6 +22,7 @@
     "dependencies": {
         "@inertiajs/inertia-react": "^0.8.1",
         "dayjs": "^1.11.10",
-        "react-icons": "^4.11.0"
+        "react-icons": "^4.11.0",
+        "react-router-dom": "^6.19.0"
     }
 }

@@ -7,6 +7,8 @@ const AllFriends = ({ user, auth, chirp }) => {
   const [areFriends, setAreFriends] = useState(false);
   const [friends, setFriends] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredFriends, setFilteredFriends] = useState([]);
 
   const { data, setData, post, processing, reset, errors } = useForm({
     message: '',
@@ -41,6 +43,17 @@ const AllFriends = ({ user, auth, chirp }) => {
   }, [user.id]);
 
 
+  const handleSearch = () => {
+    const filteredResults = searchQuery
+      ? friends.filter(friend =>
+        friend.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      : friends;
+
+    setFilteredFriends(filteredResults);
+  };
+
+
   return (
     <>
       <AuthenticatedLayout
@@ -56,11 +69,41 @@ const AllFriends = ({ user, auth, chirp }) => {
             <div className='bg-white'>
               <div className='p-4'>
                 <h2 className='font-bold'>My Friends:</h2>
-                <div className='flex flex-row justify-center'>
-                  <input type="text" name="searchFriend" id="searchFriend" placeholder='searchFriend' className='bg-gray-100 rounded border-none mt-3 mx-3 outline-none' />
-                  <button className='mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg'>
+                <div className='flex flex-row justify-center mt-4'>
+                  <input
+                    type="text"
+                    name="searchFriend"
+                    id="searchFriend"
+                    placeholder='Search Friend'
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className='bg-gray-100 rounded border-none mt-3 mx-3 outline-none'
+                  />
+                  <button
+                    onClick={handleSearch}
+                    className='mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg'
+                  >
                     Search
                   </button>
+                </div>
+                <div className='flex flex-row mt-4'>
+                  {filteredFriends.length > 0 ? (
+                    filteredFriends.map(friend => (
+                      <div key={friend.id}>
+                        <Link href={`/profile/${friend.slug}`}>
+                          <img src={`/storage/${friend.profile_Image_Url}`} alt="" className='h-64 mx-3' />
+                          <p className='text-center text-xl'>{friend.name}</p>
+                          <div className='flex'>
+                            <button className='mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg mx-auto'>
+                              View friend
+                            </button>
+                          </div>
+                        </Link>
+                      </div>
+                    ))
+                  ) : (
+                    ''
+                  )}
                 </div>
                 <div className='flex flex-row mt-4'>
                   {friends ? (

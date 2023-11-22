@@ -20,11 +20,11 @@ class Message extends Model
 
   public function sender()
   {
-    return $this->belongsTo(User::class, 'sender_id');
+    return $this->belongsTo(User::class, 'sender_id', 'profile_image_url');
   }
 
   public function receiver()
   {
-    return $this->belongsTo(User::class, 'receiver_id');
+    return $this->belongsTo(User::class, 'receiver_id', 'profile_image_url');
   }
 }

@@ -49,7 +49,7 @@ export default function Authenticated({ user, header, children }) {
                       <FaRegMessage />
                     </Link>
                     <span className='mx-1'>
-                      2
+
                     </span>
                   </button>
                   <button

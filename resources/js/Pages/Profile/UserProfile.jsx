@@ -138,7 +138,12 @@ const UserProfile = ({ user, auth, chirp }) => {
                         </button>
                       </div>
                       <div className="mt-2 mx-4 px-2 pt-3 relative self-end bg-blue-500 text-white rounded-lg">
-                        <Link href='/messages' className='flex flex-row'>
+                        {/* <Link href='/messages' className='flex flex-row'>
+                          <FaRegMessage style={{ fontSize: '18px' }} />
+                          <p className='mx-2 pb-1'>Send messages</p>
+                        </Link> */}
+
+                        <Link href={`/messages?receiver_id=${user.id}`} className='flex flex-row'>
                           <FaRegMessage style={{ fontSize: '18px' }} />
                           <p className='mx-2 pb-1'>Send messages</p>
                         </Link>
